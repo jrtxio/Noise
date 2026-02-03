@@ -18,14 +18,14 @@ cp "$RACKET/lib/libracketcs.a" "$ROOT/Lib/libracketcs-$ARCH.a"
 
 case "$ARCH" in
     "arm64-ios")
-        DEST="$ROOT/Swift/Sources/NoiseBoot_iOS/boot/$ARCH"
+        DEST="$ROOT/Sources/NoiseBoot_iOS/boot/$ARCH"
         mkdir -p "$DEST"
         cp "$RACKET/lib/petite.boot" "$DEST/petite.boot"
         cp "$RACKET/lib/scheme.boot" "$DEST/scheme.boot"
         cp "$RACKET/lib/racket.boot" "$DEST/racket.boot"
         ;;
     "arm64-macos" | "x86_64-macos")
-        DEST="$ROOT/Swift/Sources/NoiseBoot_macOS/boot/$ARCH"
+        DEST="$ROOT/Sources/NoiseBoot_macOS/boot/$ARCH"
         mkdir -p "$DEST"
         cp "$RACKET/lib/petite.boot" "$DEST/petite.boot"
         cp "$RACKET/lib/scheme.boot" "$DEST/scheme.boot"
