@@ -7,7 +7,7 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-ROOT="$(dirname "$0")/../.."
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ARCH="$1"
 RACKET="$2"
 
