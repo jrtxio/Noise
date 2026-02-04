@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "Noise",
+  name: "SwiftNoise",
   platforms: [
     .iOS(.v16),
     .macOS(.v13),

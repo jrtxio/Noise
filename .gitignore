@@ -1,4 +1,5 @@
 # Swift / Xcode
+.DS_Store
 *.xcframework
 .build/
 .swiftpm/
