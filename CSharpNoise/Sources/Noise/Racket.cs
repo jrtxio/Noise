@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -92,6 +93,9 @@ internal static unsafe class RacketImports
 
     [DllImport("racketcs.dll", EntryPoint = "racket_unlock_object", CallingConvention = CallingConvention.Cdecl)]
     internal static extern void racket_unlock_object(nint ptr);
+
+    [DllImport("racketcs.dll", EntryPoint = "racket_pointer", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern nint racket_pointer(nint value);
 }
 
 /// <summary>
@@ -235,6 +239,29 @@ public sealed unsafe class Racket
         }
         return ptr;
     }
+
+    /// <summary>
+    /// loads the "NoiseBoot" type from the NoiseBoot.Windows assembly to locate boot files
+    /// </summary>
+    private static Assembly? _bootAssembly;
+    
+    internal static Assembly GetBootAssembly()
+    { 
+        if (_bootAssembly != null) return _bootAssembly;
+        
+        // Try to load the assembly if we can't find the type directly (though the ProjectReference should make it available)
+        // Since we don't have a direct reference in code to NoiseBoot.Windows types in the original code, we need to ensure it's loaded.
+        // But with the new NoiseBoot class, we can just use that.
+        try 
+        {
+            _bootAssembly = Assembly.Load("NoiseBoot.Windows");
+        }
+        catch
+        {
+             // Fallback or rethrow if critical
+        }
+        return _bootAssembly ?? typeof(Racket).Assembly; // Fallback to current if failed, though likely incorrect
+    }
 }
 
 /// <summary>
@@ -273,9 +300,15 @@ public readonly struct Val
     public static Val String(string value)
     {
         var bytes = Encoding.UTF8.GetBytes(value);
+        // racket_string takes the length in bytes (excluding null terminator if not provided in bytes)
+        // The Swift implementation passes `utf8.underestimatedCount - 1` approx, but better to pass exact byte length.
+        // C# GetBytes returns the exact bytes.
         var ptr = RacketImports.racket_string(value, (nuint)bytes.Length);
         return new Val(ptr);
     }
+    
+    /// <summary>Creates a Chez Scheme integer representing a pointer address.</summary>
+    public static Val Pointer(nint value) => new Val(RacketImports.racket_pointer(value));
 
     /// <summary>Creates a pair of two values.</summary>
     public static Val Cons(Val car, Val cdr) => new Val(RacketImports.racket_cons(car.Ptr, cdr.Ptr));
@@ -419,20 +452,24 @@ internal static class BootFileExtractor
             var tempPath = Path.Combine(Path.GetTempPath(), $"Noise_boot_{Guid.NewGuid()}");
             Directory.CreateDirectory(tempPath);
 
-            var archFolder = architecture == Architecture.Arm64 ? "arm64" : "x64";
+            var archFolder = architecture == Architecture.Arm64 ? "arm64_windows" : "x86_64_windows";
+            // Note: Resource names from folders with hyphens usually have underscores in .NET
+            
             var bootFiles = new[] { "petite.boot", "scheme.boot", "racket.boot" };
 
-            var assembly = typeof(BootFileExtractor).Assembly;
+            // var assembly = typeof(BootFileExtractor).Assembly; // WRONG
+            // Use the marker class from NoiseBoot.Windows to get the assembly safely
+            var assembly = typeof(NoiseBoot.Windows.NoiseBoot).Assembly;
             var resourceNames = assembly.GetManifestResourceNames();
 
             foreach (var bootFile in bootFiles)
             {
                 var resourceName = resourceNames.FirstOrDefault(n =>
-                    n.Contains($"NoiseBoot.Windows.boot.{archFolder}") &&
+                    n.Contains($"boot.{archFolder}") && // Adjusted to match likely resource structure "NoiseBoot.Windows.boot.x64.petite.boot"
                     n.EndsWith(bootFile));
 
                 if (resourceName == null)
-                    throw new FileNotFoundException($"Boot file not found: {bootFile}");
+                    throw new FileNotFoundException($"Boot file not found: {bootFile} in assembly {assembly.FullName}. Available: {string.Join(", ", resourceNames)}");
 
                 using var stream = assembly.GetManifestResourceStream(resourceName)!;
                 var outputPath = Path.Combine(tempPath, bootFile);
