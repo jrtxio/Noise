@@ -5,12 +5,20 @@ using NoiseSerde;
 
 namespace NoiseBackendExample;
 
-public struct Comment
+public class Comment
 {
-    public ulong Id { get; }
-    public string Author { get; }
-    public string Timestamp { get; }
-    public string Text { get; }
+    public ulong Id { get; set; }
+    public string Author { get; set; }
+    public string Timestamp { get; set; }
+    public string Text { get; set; }
+
+    public Comment() 
+    {
+        Id = 0;
+        Author = "";
+        Timestamp = "";
+        Text = "";
+    }
 
     public Comment(ulong id, string author, string timestamp, string text)
     {
@@ -38,11 +46,18 @@ public struct Comment
     }
 }
 
-public struct Story
+public class Story
 {
-    public ulong Id { get; }
-    public string Title { get; }
-    public List<ulong> Comments { get; }
+    public ulong Id { get; set; }
+    public string Title { get; set; }
+    public List<ulong> Comments { get; set; }
+
+    public Story()
+    {
+        Id = 0;
+        Title = "";
+        Comments = new List<ulong>();
+    }
 
     public Story(ulong id, string title, List<ulong> comments)
     {
@@ -55,12 +70,6 @@ public struct Story
     {
         var id = inp.ReadUVarint();
         var title = inp.ReadString();
-        
-        // Swift: [UVarint].read
-        // We need to implement list reading logic similar to how Swift does it.
-        // Usually list serialization first writes length, then items.
-        // Assuming Serde has or we need to implement list reading logic.
-        // Checking Swift Serde implementation for Arrays would be ideal, but standard pattern is length (UVarint) + items.
         
         ulong count = inp.ReadUVarint();
         var comments = new List<ulong>((int)count);
@@ -77,7 +86,6 @@ public struct Story
         Id.WriteUVarint(outp);
         Title.WriteString(outp);
         
-        // Write list logic
         ((ulong)Comments.Count).WriteUVarint(outp);
         foreach (var c in Comments)
         {
