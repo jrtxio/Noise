@@ -40,9 +40,9 @@ public class Comment
     public void Write(IOutputPort outp)
     {
         Id.WriteUVarint(outp);
-        Author.WriteString(outp);
-        Timestamp.WriteString(outp);
-        Text.WriteString(outp);
+        Author.Write(outp);
+        Timestamp.Write(outp);
+        Text.Write(outp);
     }
 }
 
@@ -84,7 +84,7 @@ public class Story
     public void Write(IOutputPort outp)
     {
         Id.WriteUVarint(outp);
-        Title.WriteString(outp);
+        Title.Write(outp);
         
         ((ulong)Comments.Count).WriteUVarint(outp);
         foreach (var c in Comments)

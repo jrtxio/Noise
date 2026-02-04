@@ -40,7 +40,7 @@ namespace NoiseBackendExample
                 _backend = new Backend(zoPath, "main", "serve");
                 
                 // Navigate to List
-            RootFrame.Navigate(typeof(StoryListPage), _backend);
+                RootFrame.Navigate(typeof(StoryListPage), _backend);
             }
             catch (Exception ex)
             {
