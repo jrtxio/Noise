@@ -72,3 +72,11 @@ artifacts/
 
 # Claude
 .claude/
+
+# Racket libraries (copied from build)
+SwiftNoise/Lib/include/*.h
+SwiftNoise/Lib/lib/*.a
+CSharpNoise/Lib/include/*.h
+CSharpNoise/Lib/lib/*.a
+CSharpNoise/Lib/lib/*.dll
+CSharpNoise/Lib/lib/*.lib
