@@ -5,9 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Noise is a multi-language wrapper around the Racket CS runtime for simplifying embedding. The project consists of:
-- **Swift/**: Primary implementation with Noise (core runtime), NoiseSerde (data serialization), and NoiseBackend (client-server)
+- **SwiftNoise/**: Primary implementation with Noise (core runtime), NoiseSerde (data serialization), and NoiseBackend (client-server)
 - **Racket/**: Racket packages for serialization and backend support
-- **CSharp/**: C# implementation of similar functionality
+- **CSharpNoise/**: C# implementation of similar functionality
 
 ## Development Commands
 
@@ -43,7 +43,7 @@ raco docs noise
 
 ### Updating Racket Binaries
 
-The shared libraries in `Swift/Lib/` and boot files in `Swift/Sources/Noise/boot/` must match your Racket version. To update:
+The shared libraries in `SwiftNoise/Lib/` and boot files in `SwiftNoise/Sources/Noise/boot/` must match your Racket version. To update:
 
 ```bash
 # Build Racket from source first, then:
@@ -86,9 +86,9 @@ git lfs pull
 
 ## Build Artifacts
 
-- `Swift/RacketCS-ios.xcframework`: iOS RacketCS static library
-- `Swift/RacketCS-macos.xcframework`: macOS RacketCS static library (universal)
-- `Swift/Tests/NoiseTest/Modules/mods.zo`: Compiled Racket test modules
+- `SwiftNoise/RacketCS-ios.xcframework`: iOS RacketCS static library
+- `SwiftNoise/RacketCS-macos.xcframework`: macOS RacketCS static library (universal)
+- `SwiftNoise/Tests/NoiseTest/Modules/mods.zo`: Compiled Racket test modules
 
 ## CI/CD
 
@@ -97,4 +97,4 @@ git lfs pull
 
 ## Module Testing
 
-Test modules in `Swift/Tests/NoiseTest/Modules/` must be compiled to `.zo` format before running Swift tests. The Makefile handles this automatically.
+Test modules in `SwiftNoise/Tests/NoiseTest/Modules/` must be compiled to `.zo` format before running Swift tests. The Makefile handles this automatically.
