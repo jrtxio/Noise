@@ -5,7 +5,13 @@
 
 #include <string>
 
+#if defined(_M_ARM64)
+#define ARCH "arm64"
+#elif defined(_M_AMD64) || defined(_M_X64)
 #define ARCH "x86_64"
+#else
+#error "Unsupported architecture"
+#endif
 #define OS "windows"
 
 namespace Noise {
