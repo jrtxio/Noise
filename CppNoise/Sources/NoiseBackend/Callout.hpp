@@ -1,33 +1,19 @@
-// Callout.hpp - Callout Support
-// Mirrors SwiftNoise/Sources/NoiseBackend/Callout.swift
+// Callout.hpp - Callback Support
 
 #pragma once
 
 #include <functional>
-#include <atomic>
 
 namespace Noise {
 
-/// A callable wrapper that can be invoked from Racket.
+// Callable wrapper that can be invoked from Racket.
 class Callout {
+    std::function<void()> handler_;
 public:
-    using Handler = std::function<void()>;
-
     Callout() = default;
-    explicit Callout(Handler handler) : handler_(std::move(handler)) {}
-
-    void operator()() const {
-        if (handler_) {
-            handler_();
-        }
-    }
-
-    explicit operator bool() const {
-        return static_cast<bool>(handler_);
-    }
-
-private:
-    Handler handler_;
+    explicit Callout(std::function<void()> handler) : handler_(std::move(handler)) {}
+    void operator()() const { if (handler_) handler_(); }
+    explicit operator bool() const { return static_cast<bool>(handler_); }
 };
 
 } // namespace Noise

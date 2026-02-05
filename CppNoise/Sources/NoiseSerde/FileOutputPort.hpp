@@ -1,5 +1,4 @@
-// FileOutputPort.hpp - File Handle Output Port
-// Mirrors SwiftNoise/Sources/NoiseSerde/FileHandleOutputPort.swift
+// FileOutputPort.hpp - File Descriptor Output Port
 
 #pragma once
 
@@ -13,8 +12,8 @@
 
 namespace Noise {
 
-/// An output port backed by a file descriptor.
 class FileOutputPort : public OutputPort {
+    int fd_;
 public:
     explicit FileOutputPort(int fd) : fd_(fd) {}
 
@@ -28,7 +27,7 @@ public:
 
     void write(const uint8_t* data, size_t count) override {
         #ifdef _WIN32
-        _write(fd_, data, static_cast<unsigned int>(count));
+        _write(fd_, data, static_cast<unsigned>(count));
         #else
         ::write(fd_, data, count);
         #endif
@@ -41,9 +40,6 @@ public:
         ::fsync(fd_);
         #endif
     }
-
-private:
-    int fd_;
 };
 
 } // namespace Noise
