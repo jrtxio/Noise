@@ -1,0 +1,25 @@
+# Build outputs
+NoiseBackendExample/res/
+NoiseBackendExample/Generated Files/
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+x64/
+Debug/
+Release/
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.log
+
+# NuGet
+packages/
+*.nupkg
+
+# WinUI3
+*.winmd
+*.pri
+AppPackages/
+BundleArtifacts/
