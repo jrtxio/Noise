@@ -23,36 +23,35 @@ public:
     // Fetch top stories asynchronously
     void fetchTopStories(std::function<void(std::vector<Story>)> callback) {
         auto future = backend_->getTopStories();
-        
-        future->onComplete([this, callback](const std::vector<Story>& stories) {
-            // Dispatch to UI thread
-            dispatcher_.TryEnqueue([callback, stories]() {
-                callback(stories);
-            });
-        });
-        
-        future->onError([this](const std::string& error) {
-            dispatcher_.TryEnqueue([error]() {
-                // Handle error (could show message box)
-            });
-        });
+        future->sink(
+            [this, callback](std::vector<Story> stories) {
+                dispatcher_.TryEnqueue([callback, stories]() {
+                    callback(stories);
+                });
+            },
+            [this](std::string error) {
+                dispatcher_.TryEnqueue([error]() {
+                    // TODO: show error dialog
+                });
+            }
+        );
     }
 
     // Fetch comments for a story
     void fetchComments(uint64_t storyId, std::function<void(std::vector<Comment>)> callback) {
         auto future = backend_->getComments(storyId);
-        
-        future->onComplete([this, callback](const std::vector<Comment>& comments) {
-            dispatcher_.TryEnqueue([callback, comments]() {
-                callback(comments);
-            });
-        });
-        
-        future->onError([this](const std::string& error) {
-            dispatcher_.TryEnqueue([error]() {
-                // Handle error
-            });
-        });
+        future->sink(
+            [this, callback](std::vector<Comment> comments) {
+                dispatcher_.TryEnqueue([callback, comments]() {
+                    callback(comments);
+                });
+            },
+            [this](std::string error) {
+                dispatcher_.TryEnqueue([error]() {
+                    // TODO: show error dialog
+                });
+            }
+        );
     }
 
     Backend* getBackend() { return backend_.get(); }
