@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Add CppNoise headers to include path -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!-- Copy Racket DLL and boot files to output directory -->
+  <Target Name="CppNoiseCopyRuntime" AfterTargets="Build">
+    <ItemGroup>
+      <CppNoiseRuntimeFiles Include="$(MSBuildThisFileDirectory)bin\**\*.*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(CppNoiseRuntimeFiles)"
+      DestinationFolder="$(OutDir)%(RecursiveDir)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

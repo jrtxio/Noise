@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CppNoise</id>
+    <version>0.1.0</version>
+    <title>CppNoise</title>
+    <description>Async Racket Backend for C++ — header-only library for WinUI 3 applications.</description>
+    <authors>Noise</authors>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>racket noise backend async winui3 native</tags>
+  </metadata>
+  <files>
+    <!-- MSBuild integration -->
+    <file src="CppNoise.targets" target="build\native\CppNoise.targets" />
+
+    <!-- Library headers (Noise, NoiseBackend, NoiseSerde, NoiseBoot) -->
+    <file src="Sources\Noise\*.hpp"               target="build\native\include\Noise" />
+    <file src="Sources\NoiseBackend\*.hpp"         target="build\native\include\NoiseBackend" />
+    <file src="Sources\NoiseSerde\*.hpp"           target="build\native\include\NoiseSerde" />
+    <file src="Sources\NoiseBoot_Windows\NoiseBoot.hpp" target="build\native\include\NoiseBoot" />
+
+    <!-- Racket C headers -->
+    <file src="Lib\include\*.h" target="build\native\include" />
+
+    <!-- Racket runtime DLL (copied to output dir at build time) -->
+    <file src="Lib\libracketcs-x86_64-windows.dll" target="build\native\bin" />
+
+    <!-- Racket boot files (copied to output dir at build time) -->
+    <file src="Sources\NoiseBoot_Windows\boot\x86_64-windows\petite.boot" target="build\native\bin\boot\x86_64-windows" />
+    <file src="Sources\NoiseBoot_Windows\boot\x86_64-windows\scheme.boot" target="build\native\bin\boot\x86_64-windows" />
+    <file src="Sources\NoiseBoot_Windows\boot\x86_64-windows\racket.boot" target="build\native\bin\boot\x86_64-windows" />
+  </files>
+</package>
