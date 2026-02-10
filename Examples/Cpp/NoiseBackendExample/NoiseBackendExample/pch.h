@@ -23,6 +23,8 @@
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <wil/cppwinrt_helpers.h>
 
+#include "NoiseBoot_Windows/NoiseBoot.hpp"
+
 // Standard C++
 #include <string>
 #include <vector>
