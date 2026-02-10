@@ -7,6 +7,7 @@
 #include "NoiseSerde/FileInputPort.hpp"
 #include "NoiseSerde/FileOutputPort.hpp"
 #include "Future.hpp"
+#include "Callout.hpp"
 #include "Noise/Racket.hpp"
 
 #include <thread>
@@ -142,6 +143,11 @@ public:
         pending_[id] = std::make_shared<Handler>(future, std::move(readProc));
         stats_.totalWriteDuration += std::chrono::steady_clock::now() - t0;
         return future;
+    }
+
+    template<typename RpcFunc>
+    auto installCallback(uint64_t id, RpcFunc rpc, std::function<void(InputPort&)> callback) {
+        return Noise::installCallback(id, rpc, std::move(callback));
     }
 
     BackendStats stats() const {

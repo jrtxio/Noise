@@ -12,7 +12,14 @@ class InputPort {
 public:
     virtual ~InputPort() = default;
     virtual uint8_t readByte() = 0;
-    virtual std::vector<uint8_t> read(size_t count) = 0;
+    virtual size_t read(uint8_t* buffer, size_t count) = 0;
+    
+    virtual std::vector<uint8_t> read(size_t count) {
+        std::vector<uint8_t> buf(count);
+        size_t n = read(buf.data(), count);
+        buf.resize(n);
+        return buf;
+    }
 };
 
 class OutputPort {

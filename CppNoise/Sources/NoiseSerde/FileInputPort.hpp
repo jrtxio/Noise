@@ -27,16 +27,14 @@ public:
         return byte;
     }
 
-    std::vector<uint8_t> read(size_t count) override {
-        std::vector<uint8_t> buf(count);
+    size_t read(uint8_t* buffer, size_t count) override {
         #ifdef _WIN32
-        int n = _read(fd_, buf.data(), static_cast<unsigned>(count));
+        int n = _read(fd_, buffer, static_cast<unsigned>(count));
         #else
-        ssize_t n = ::read(fd_, buf.data(), count);
+        ssize_t n = ::read(fd_, buffer, count);
         #endif
         if (n < 0) throw std::runtime_error("Failed to read");
-        buf.resize(static_cast<size_t>(n));
-        return buf;
+        return static_cast<size_t>(n);
     }
 };
 

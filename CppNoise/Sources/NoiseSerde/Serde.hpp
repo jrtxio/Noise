@@ -110,8 +110,15 @@ inline void writeFloat64(OutputPort& p, double v) {
 inline std::string readString(InputPort& p) {
     int64_t len = readVarint(p);
     if (len <= 0) return "";
-    auto bytes = p.read(size_t(len));
-    return std::string(bytes.begin(), bytes.end());
+    
+    // Use thread_local buffer to avoid allocation for temporary bytes
+    static thread_local std::vector<uint8_t> buffer;
+    if (buffer.size() < size_t(len)) {
+        buffer.resize(size_t(len));
+    }
+    
+    size_t n = p.read(buffer.data(), size_t(len));
+    return std::string(reinterpret_cast<char*>(buffer.data()), n);
 }
 inline void writeString(OutputPort& p, const std::string& s) {
     writeVarint(p, int64_t(s.size()));

@@ -3,18 +3,16 @@
 #include "NoiseSerde/Serde.hpp"
 #include "NoiseSerde/DataInputPort.hpp"
 #include "NoiseSerde/DataOutputPort.hpp"
-#include "NoiseBackend/Logger.hpp"
 #include <iostream>
 #include <cassert>
 
 using namespace Noise;
 
 void testBasicTypes() {
-    LOG_INFO("Testing basic type serialization...");
+    std::cout << "Testing basic type serialization..." << std::endl;
     
     DataOutputPort out;
     
-    // Write various types
     writeBool(out, true);
     writeInt16(out, -1234);
     writeUInt16(out, 5678);
@@ -22,7 +20,6 @@ void testBasicTypes() {
     writeFloat32(out, 3.14159f);
     writeString(out, "Hello, Noise!");
     
-    // Read them back
     DataInputPort in(out.data());
     
     assert(readBool(in) == true);
@@ -32,11 +29,11 @@ void testBasicTypes() {
     assert(std::abs(readFloat32(in) - 3.14159f) < 0.001f);
     assert(readString(in) == "Hello, Noise!");
     
-    LOG_INFO("✓ Basic types test PASSED");
+    std::cout << "  PASSED" << std::endl;
 }
 
 void testVarint() {
-    LOG_INFO("Testing varint serialization...");
+    std::cout << "Testing varint serialization..." << std::endl;
     
     DataOutputPort out;
     
@@ -54,11 +51,11 @@ void testVarint() {
     assert(readVarint(in) == 12345);
     assert(readVarint(in) == -9876);
     
-    LOG_INFO("✓ Varint test PASSED");
+    std::cout << "  PASSED" << std::endl;
 }
 
 void testVector() {
-    LOG_INFO("Testing vector serialization...");
+    std::cout << "Testing vector serialization..." << std::endl;
     
     DataOutputPort out;
     
@@ -77,11 +74,11 @@ void testVector() {
     assert(result[0] == 1);
     assert(result[4] == 5);
     
-    LOG_INFO("✓ Vector test PASSED");
+    std::cout << "  PASSED" << std::endl;
 }
 
 void testMap() {
-    LOG_INFO("Testing map serialization...");
+    std::cout << "Testing map serialization..." << std::endl;
     
     DataOutputPort out;
     
@@ -108,11 +105,11 @@ void testMap() {
     assert(result["two"] == 2);
     assert(result["three"] == 3);
     
-    LOG_INFO("✓ Map test PASSED");
+    std::cout << "  PASSED" << std::endl;
 }
 
 void testOptional() {
-    LOG_INFO("Testing optional serialization...");
+    std::cout << "Testing optional serialization..." << std::endl;
     
     DataOutputPort out;
     
@@ -131,21 +128,16 @@ void testOptional() {
     assert(*result1 == 42);
     assert(!result2.has_value());
     
-    LOG_INFO("✓ Optional test PASSED");
+    std::cout << "  PASSED" << std::endl;
 }
 
 int main() {
-    Logger::setLevel(LogLevel::INFO);
-    
-    LOG_INFO("=== Starting Serde Tests ===");
-    
+    std::cout << "=== Serde Tests ===" << std::endl;
     testBasicTypes();
     testVarint();
     testVector();
     testMap();
     testOptional();
-    
-    LOG_INFO("=== All Serde tests completed ===");
-    
+    std::cout << "=== Done ===" << std::endl;
     return 0;
 }

@@ -85,14 +85,4 @@ inline void uninstallCallback(uint64_t id) {
     CallbackRegistry::unregisterCallback(id);
 }
 
-// Simple callable wrapper (for compatibility with existing code)
-class Callout {
-    std::function<void()> handler_;
-public:
-    Callout() = default;
-    explicit Callout(std::function<void()> handler) : handler_(std::move(handler)) {}
-    void operator()() const { if (handler_) handler_(); }
-    explicit operator bool() const { return static_cast<bool>(handler_); }
-};
-
 } // namespace Noise

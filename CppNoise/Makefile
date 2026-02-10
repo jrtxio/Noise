@@ -1,41 +1,33 @@
 # CppNoise Build System
-# Mirrors SwiftNoise structure for Windows
+# Header-only library
 
 CXX = cl
 CXXFLAGS = /std:c++20 /EHsc /W4 /I Lib/include /I Sources
 
-ARCH = x86_64-windows
-
-# Source files
-NOISE_SOURCES = Sources/Noise/Racket.cpp
-SERDE_SOURCES = Sources/NoiseSerde/Port.cpp
-BACKEND_SOURCES = Sources/NoiseBackend/Backend.cpp
-
 # Output
 BUILD_DIR = build
-LIB_DIR = $(BUILD_DIR)/lib
 
-.PHONY: all clean
+.PHONY: all clean tests
 
-all: $(LIB_DIR)/Noise.lib $(LIB_DIR)/NoiseSerde.lib $(LIB_DIR)/NoiseBackend.lib
+all: tests
 
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	mkdir $(BUILD_DIR)
 
-$(LIB_DIR):
-	mkdir -p $(LIB_DIR)
+# Tests
+tests: $(BUILD_DIR) \
+	$(BUILD_DIR)/FutureTest.exe \
+	$(BUILD_DIR)/SerdeTest.exe \
+	$(BUILD_DIR)/CoroutineTest.exe
 
-$(LIB_DIR)/Noise.lib: $(NOISE_SOURCES) | $(LIB_DIR)
-	$(CXX) $(CXXFLAGS) /c $(NOISE_SOURCES) /Fo$(BUILD_DIR)/
-	lib /OUT:$@ $(BUILD_DIR)/*.obj
+$(BUILD_DIR)/FutureTest.exe: Tests/FutureTest.cpp
+	$(CXX) $(CXXFLAGS) Tests/FutureTest.cpp /Fo$(BUILD_DIR)/FutureTest.obj /Fe$@
 
-$(LIB_DIR)/NoiseSerde.lib: $(SERDE_SOURCES) | $(LIB_DIR)
-	$(CXX) $(CXXFLAGS) /c $(SERDE_SOURCES) /Fo$(BUILD_DIR)/
-	lib /OUT:$@ $(BUILD_DIR)/*.obj
+$(BUILD_DIR)/SerdeTest.exe: Tests/SerdeTest.cpp
+	$(CXX) $(CXXFLAGS) Tests/SerdeTest.cpp /Fo$(BUILD_DIR)/SerdeTest.obj /Fe$@
 
-$(LIB_DIR)/NoiseBackend.lib: $(BACKEND_SOURCES) | $(LIB_DIR)
-	$(CXX) $(CXXFLAGS) /c $(BACKEND_SOURCES) /Fo$(BUILD_DIR)/
-	lib /OUT:$@ $(BUILD_DIR)/*.obj
+$(BUILD_DIR)/CoroutineTest.exe: Tests/CoroutineTest.cpp
+	$(CXX) $(CXXFLAGS) Tests/CoroutineTest.cpp /Fo$(BUILD_DIR)/CoroutineTest.obj /Fe$@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	if exist $(BUILD_DIR) rmdir /s /q $(BUILD_DIR)

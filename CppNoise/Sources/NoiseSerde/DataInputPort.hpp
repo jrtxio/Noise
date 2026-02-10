@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Port.hpp"
+#include <cstring>
 
 namespace Noise {
 
@@ -17,11 +18,11 @@ public:
         return data_[pos_++];
     }
 
-    std::vector<uint8_t> read(size_t count) override {
+    size_t read(uint8_t* buffer, size_t count) override {
         size_t n = std::min(count, data_.size() - pos_);
-        std::vector<uint8_t> result(data_.begin() + pos_, data_.begin() + pos_ + n);
+        std::memcpy(buffer, data_.data() + pos_, n);
         pos_ += n;
-        return result;
+        return n;
     }
 };
 
