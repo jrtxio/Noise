@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- MainWindow.xaml -->
 <Window
     x:Class="NoiseBackendExample.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,9 +7,59 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="NoiseBackendExample">
+    Title="Noise Backend Example - Hacker News">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <!-- Left: Story List -->
+        <Grid Grid.Column="0" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,1,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Top Stories" Style="{StaticResource TitleTextBlockStyle}"
+                       Margin="16,16,16,8"/>
+
+            <ListView x:Name="StoryListView" Grid.Row="1"
+                      SelectionChanged="OnStorySelected"/>
+
+            <ProgressRing x:Name="StoriesLoading" Grid.Row="1"
+                          IsActive="True" Width="40" Height="40"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Right: Comment Detail -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="StoryTitle" Grid.Row="0"
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       Margin="16,16,16,8" TextWrapping="Wrap"/>
+
+            <StackPanel x:Name="BackButton" Grid.Row="1" Orientation="Horizontal"
+                        Margin="16,0,16,8" Visibility="Collapsed">
+                <HyperlinkButton Content="&#x2190; Back" Click="OnBackClicked"/>
+            </StackPanel>
+
+            <ListView x:Name="CommentListView" Grid.Row="2" Padding="8,0"/>
+
+            <ProgressRing x:Name="CommentsLoading" Grid.Row="2"
+                          IsActive="False" Width="40" Height="40"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <TextBlock x:Name="PlaceholderText" Grid.Row="2"
+                       Text="Select a story" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Style="{StaticResource SubtitleTextBlockStyle}"/>
+        </Grid>
     </Grid>
 </Window>
