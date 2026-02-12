@@ -1,12 +1,13 @@
-// pch.h - Precompiled Header
 #pragma once
-
 #include <windows.h>
 #include <unknwn.h>
 #include <restrictederrorinfo.h>
 #include <hstring.h>
 
-// WinRT headers
+// Undefine GetCurrentTime macro to prevent
+// conflict with Storyboard::GetCurrentTime
+#undef GetCurrentTime
+
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.ApplicationModel.Activation.h>
@@ -22,11 +23,3 @@
 #include <winrt/Microsoft.UI.Xaml.Shapes.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <wil/cppwinrt_helpers.h>
-
-#include "NoiseBoot_Windows/NoiseBoot.hpp"
-
-// Standard C++
-#include <string>
-#include <vector>
-#include <memory>
-#include <functional>

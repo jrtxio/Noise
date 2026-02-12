@@ -13,7 +13,7 @@
 #endif
 
 #include "racketcs.h"
-#include "NoiseBoot/NoiseBoot.hpp"
+#include "NoiseBoot_Windows/NoiseBoot.hpp"
 
 namespace Noise {
 
@@ -83,7 +83,7 @@ struct Racket {
         args.boot2_path = const_cast<char*>(scheme.c_str());
         args.boot3_path = const_cast<char*>(racket.c_str());
         racket_boot(&args);
-        racket_deactivate_thread();
+        Sdeactivate_thread();
     }
 
     ~Racket() {}
@@ -96,15 +96,15 @@ struct Racket {
 
     template<typename F>
     auto bracket(F&& proc) -> decltype(proc()) {
-        racket_activate_thread();
+        Sactivate_thread();
         auto result = proc();
-        racket_deactivate_thread();
+        Sdeactivate_thread();
         return result;
     }
 
-    void activate() { racket_activate_thread(); }
-    void deactivate() { racket_deactivate_thread(); }
-    void destroy() { racket_destroy(); }
+    void activate() { Sactivate_thread(); }
+    void deactivate() { Sdeactivate_thread(); }
+    void destroy() { Sscheme_deinit(); }
 };
 
 } // namespace Noise

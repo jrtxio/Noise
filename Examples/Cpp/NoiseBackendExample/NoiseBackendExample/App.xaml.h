@@ -1,4 +1,3 @@
-// App.xaml.h
 #pragma once
 
 #include "App.xaml.g.h"
@@ -13,12 +12,5 @@ namespace winrt::NoiseBackendExample::implementation
 
     private:
         winrt::Microsoft::UI::Xaml::Window window{ nullptr };
-    };
-}
-
-namespace winrt::NoiseBackendExample::factory_implementation
-{
-    struct App : AppT<App, implementation::App>
-    {
     };
 }

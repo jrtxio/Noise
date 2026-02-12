@@ -1,29 +1,24 @@
-// MainWindow.xaml.cpp
 #include "pch.h"
 #include "MainWindow.xaml.h"
 #if __has_include("MainWindow.g.cpp")
 #include "MainWindow.g.cpp"
 #endif
-#include "StoryListPage.xaml.h"
 
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
 namespace winrt::NoiseBackendExample::implementation
 {
-    MainWindow::MainWindow()
+    int32_t MainWindow::MyProperty()
     {
-        InitializeComponent();
-        
-        // Set window title
-        Title(L"Hacker News - NoiseBackendExample");
-        
-        // Navigate to story list page
-        ContentFrame().Navigate(xaml_typename<NoiseBackendExample::StoryListPage>());
+        throw hresult_not_implemented();
     }
 
-    void MainWindow::InitializeComponent()
+    void MainWindow::MyProperty(int32_t /* value */)
     {
-        MainWindowT::InitializeComponent();
+        throw hresult_not_implemented();
     }
 }
