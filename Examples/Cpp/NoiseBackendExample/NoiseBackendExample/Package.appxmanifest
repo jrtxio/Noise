@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="27fe8101-d4fa-4f97-8a24-76c03cf3ceb8"
+    Name="b3e5a92f-1c7d-4e8b-9f2a-d6c8e4f01523"
     Publisher="CN=ren.ji"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="27fe8101-d4fa-4f97-8a24-76c03cf3ceb8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b3e5a92f-1c7d-4e8b-9f2a-d6c8e4f01523" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>NoiseBackendExample</DisplayName>

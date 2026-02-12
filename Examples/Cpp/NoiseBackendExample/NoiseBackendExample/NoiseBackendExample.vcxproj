@@ -17,7 +17,7 @@
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{04920a2a-38fb-43d0-b387-20f8bc16fb9a}</ProjectGuid>
+    <ProjectGuid>{7e2b9f3a-4c1d-5e8b-af2a-d6c8e4f01523}</ProjectGuid>
     <ProjectName>NoiseBackendExample</ProjectName>
     <RootNamespace>NoiseBackendExample</RootNamespace>
     <!--
